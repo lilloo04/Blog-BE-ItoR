@@ -1,7 +1,8 @@
 # [Leets 5th] Blog 만들기
 
 ## ERD
-<img width="811" alt="image" src="https://github.com/user-attachments/assets/2ad4ee62-ef99-405c-b843-67e3e6f43fa9" />
+<img width="893" alt="image" src="https://github.com/user-attachments/assets/c8ffcae8-7573-4a72-8b24-73d6197dc15a" />
+
 
 
 ## 디렉토리 구조
