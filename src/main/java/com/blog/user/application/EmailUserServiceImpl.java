@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 
 @Service
-public class EmailUserServiceImpl implements UserService {
+public class EmailUserServiceImpl implements UserService, LoginService {
 
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
@@ -31,10 +31,11 @@ public class EmailUserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenResponse login(EmailLoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail());
+    public TokenResponse login(Object request) {
+        EmailLoginRequest emailRequest = (EmailLoginRequest) request;
 
-        if (user == null || !user.getPassword().equals(request.getPassword())) {
+        User user = userRepository.findByEmail(emailRequest.getEmail());
+        if (user == null || !user.getPassword().equals(emailRequest.getPassword())) {
             throw new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
