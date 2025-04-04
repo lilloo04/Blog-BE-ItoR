@@ -87,6 +87,7 @@ public class EmailUserServiceImpl implements UserService {
         UserResponse response = new UserResponse();
         response.setUserId(user.getUserId());
         response.setEmail(user.getEmail());
+        response.setName(user.getName());
         response.setNickname(user.getNickname());
         response.setProfileImage(user.getProfileImage());
         response.setCreatedAt(user.getCreatedAt().toString());
