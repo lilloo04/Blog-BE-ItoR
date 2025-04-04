@@ -8,9 +8,15 @@ import com.blog.user.domain.User;
 import com.blog.user.domain.UserRepository;
 import com.blog.user.presentation.dto.KakaoLoginRequest;
 import com.blog.user.presentation.dto.UserResponse;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import org.springframework.http.HttpHeaders;
 import java.sql.Timestamp;
+import java.util.Map;
 
 @Service
 public class KakaoUserServiceImpl implements LoginService {
@@ -87,14 +93,44 @@ public class KakaoUserServiceImpl implements LoginService {
         return "kakao";
     }
 
-    private KakaoProfile fetchKakaoProfile(String token) {
-        // ✅ 나중엔 여기서 진짜 카카오 API 호출 (RestTemplate 등)
-        KakaoProfile profile = new KakaoProfile();
-        profile.setEmail("kakao_user@example.com");
-        profile.setName("카카오 유저");
-        profile.setProfileImage("https://k.kakaocdn.net/profile.png");
-        return profile;
+    private KakaoProfile fetchKakaoProfile(String kakaoAccessToken) {
+        try {
+            String kakaoUrl = "https://kapi.kakao.com/v2/user/me";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + kakaoAccessToken);
+            headers.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    kakaoUrl,
+                    HttpMethod.GET,
+                    entity,
+                    Map.class
+            );
+
+            Map body = response.getBody();
+            if (body == null || !body.containsKey("kakao_account")) {
+                throw new RuntimeException("카카오 사용자 정보를 가져올 수 없습니다.");
+            }
+
+            Map kakaoAccount = (Map) body.get("kakao_account");
+            Map profile = (Map) kakaoAccount.get("profile");
+
+            KakaoProfile result = new KakaoProfile();
+            result.setEmail((String) kakaoAccount.get("email"));
+            result.setName((String) profile.get("nickname"));
+            result.setProfileImage((String) profile.get("profile_image_url"));
+
+            return result;
+
+        } catch (Exception e) {
+            throw new RuntimeException("카카오 사용자 정보 조회 실패", e);
+        }
     }
+
 
     // 내부 DTO 형태
     static class KakaoProfile {
