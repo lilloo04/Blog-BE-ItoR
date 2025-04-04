@@ -1,6 +1,7 @@
 package com.blog.token.infrastructure;
 
 import com.blog.user.domain.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
@@ -16,7 +17,7 @@ public class JwtTokenProvider {
     private final long accessTokenExpireMillis = 1000 * 60 * 15; // 15분
     private final long refreshTokenExpireMillis = 1000 * 60 * 60 * 24 * 7; // 7일
 
-    public JwtTokenProvider(String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         this.secretKey = secretKey;
     }
 
