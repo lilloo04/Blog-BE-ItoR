@@ -52,12 +52,22 @@ public class EmailUserServiceImpl implements UserService {
 
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(user.getUserId());
+        userResponse.setEmail(user.getEmail());
         userResponse.setName(user.getName());
+        userResponse.setNickname(user.getNickname());
         userResponse.setProfileImage(user.getProfileImage());
+
+        if (user.getCreatedAt() != null) {
+            userResponse.setCreatedAt(user.getCreatedAt().toString());
+        }
+        if (user.getUpdatedAt() != null) {
+            userResponse.setUpdatedAt(user.getUpdatedAt().toString());
+        }
 
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setAccessToken(accessToken);
         tokenResponse.setRefreshToken(refreshToken);
+        tokenResponse.setExpiresAt(expiresAt.toString());
         tokenResponse.setUser(userResponse);
 
         return tokenResponse;
