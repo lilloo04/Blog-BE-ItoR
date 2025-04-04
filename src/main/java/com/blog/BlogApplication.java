@@ -12,6 +12,7 @@ public class BlogApplication {
 		System.setProperty("DB_URL", dotenv.get("DB_URL"));
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+		System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET"));
 
 		// FIXME: System.setProperty로 환경 변수를 설정하지만, 추후 @Value("${config.key}") 형태로 변경 예정
 	}

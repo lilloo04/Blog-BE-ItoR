@@ -3,6 +3,8 @@ package com.blog.user.presentation;
 import com.blog.user.application.UserService;
 import com.blog.user.presentation.dto.EmailLoginRequest;
 import com.blog.token.presentation.dto.TokenResponse;
+import com.blog.user.presentation.dto.UserResponse;
+import com.blog.user.presentation.dto.UserSignupRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,18 @@ public class UserController {
         TokenResponse response = service.login(request);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/user")
+    public ResponseEntity<UserResponse> signup(@RequestBody UserSignupRequest request) {
+        UserService service = loginStrategies.get("email");
+        if (service == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        UserResponse response = service.signup(request);
+        return ResponseEntity.ok(response);
+    }
+
 
   /*
   @PostMapping("/kakao")

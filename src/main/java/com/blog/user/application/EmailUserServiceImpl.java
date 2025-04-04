@@ -2,12 +2,13 @@ package com.blog.user.application;
 
 import com.blog.token.presentation.dto.TokenResponse;
 import com.blog.user.presentation.dto.EmailLoginRequest;
+import com.blog.user.presentation.dto.UserSignupRequest;
+import com.blog.user.presentation.dto.UserResponse;
 import com.blog.token.domain.Token;
 import com.blog.token.domain.TokenRepository;
+import com.blog.token.infrastructure.JwtTokenProvider;
 import com.blog.user.domain.User;
 import com.blog.user.domain.UserRepository;
-import com.blog.token.infrastructure.JwtTokenProvider;
-import com.blog.user.presentation.dto.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -31,23 +32,24 @@ public class EmailUserServiceImpl implements UserService {
 
     @Override
     public TokenResponse login(EmailLoginRequest request) {
-        // 1. 사용자 조회
         User user = userRepository.findByEmail(request.getEmail());
 
         if (user == null || !user.getPassword().equals(request.getPassword())) {
             throw new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        // 2. 토큰 생성
         String accessToken = jwtTokenProvider.createAccessToken(user);
         String refreshToken = jwtTokenProvider.createRefreshToken(user);
         Timestamp expiresAt = jwtTokenProvider.getRefreshTokenExpiry();
 
-        // 3. 토큰 저장
-        Token token = new Token(user.getUserId(), refreshToken, expiresAt, new Timestamp(System.currentTimeMillis()));
+        Token token = new Token(
+                user.getUserId(),
+                refreshToken,
+                expiresAt,
+                new Timestamp(System.currentTimeMillis())
+        );
         tokenRepository.save(token);
 
-        // 4. 응답 DTO 생성
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(user.getUserId());
         userResponse.setName(user.getName());
@@ -59,6 +61,37 @@ public class EmailUserServiceImpl implements UserService {
         tokenResponse.setUser(userResponse);
 
         return tokenResponse;
+    }
+
+    @Override
+    public UserResponse signup(UserSignupRequest request) {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        User user = new User(
+                null,
+                request.getEmail(),
+                request.getPassword(),
+                request.getName(),
+                request.getNickname(),
+                request.getBirthDate(),
+                request.getProfileImage(),
+                request.getIntroduction(),
+                request.getAuthMethod(),
+                now,
+                now,
+                true
+        );
+
+        userRepository.save(user);
+
+        UserResponse response = new UserResponse();
+        response.setUserId(user.getUserId());
+        response.setEmail(user.getEmail());
+        response.setNickname(user.getNickname());
+        response.setProfileImage(user.getProfileImage());
+        response.setCreatedAt(user.getCreatedAt().toString());
+
+        return response;
     }
 
     @Override
