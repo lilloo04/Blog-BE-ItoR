@@ -2,10 +2,12 @@ package com.blog.token.infrastructure;
 
 import com.blog.token.domain.Token;
 import com.blog.token.domain.TokenRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
+@Repository
 public class TokenRepositoryImpl implements TokenRepository {
 
     private final DataSource dataSource;

@@ -37,6 +37,15 @@ dependencies {
 
 	//env
 	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+
+	// [JWT 테스트용 설정]
+	// 현재는 라이브러리를 이용하여 JWT를 테스트 중
+	// 성공적으로 동작하면 직접 JWT 생성 로직으로 변경할 예정
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
 }
 
 tasks.named('test') {

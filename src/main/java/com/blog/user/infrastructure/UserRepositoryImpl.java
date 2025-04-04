@@ -2,10 +2,12 @@ package com.blog.user.infrastructure;
 
 import com.blog.user.domain.User;
 import com.blog.user.domain.UserRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import javax.sql.DataSource;
 
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final DataSource dataSource;

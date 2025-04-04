@@ -8,9 +8,11 @@ import com.blog.user.domain.User;
 import com.blog.user.domain.UserRepository;
 import com.blog.token.infrastructure.JwtTokenProvider;
 import com.blog.user.presentation.dto.UserResponse;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 
+@Service
 public class EmailUserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
