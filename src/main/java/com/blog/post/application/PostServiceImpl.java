@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
                 now,
                 null
         );
-        postRepository.save(post);
+        postRepository.save(post); // postId 채워질 거라 가정
 
         List<PostContent> contents = request.getContents().stream()
                 .map(dto -> new PostContent(
