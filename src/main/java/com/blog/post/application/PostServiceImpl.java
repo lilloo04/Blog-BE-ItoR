@@ -2,11 +2,11 @@ package com.blog.post.application;
 
 import com.blog.post.domain.Post;
 import com.blog.post.domain.PostContent;
+import com.blog.post.domain.PostRepository;
 import com.blog.post.domain.PostService;
 import com.blog.post.presentation.dto.PostContentDto;
 import com.blog.post.presentation.dto.PostRequest;
 import com.blog.post.presentation.dto.PostResponse;
-import com.blog.post.infrastructure.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
                 now,
                 null
         );
-        postRepository.save(post); // postId 채워질 거라 가정
+        postRepository.save(post);
 
         List<PostContent> contents = request.getContents().stream()
                 .map(dto -> new PostContent(
@@ -70,18 +70,51 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostById(Integer postId) {
-        // TODO: repository에서 post + contents 조회
-        return null;
+        Post post = postRepository.findById(postId);
+
+        PostResponse response = new PostResponse();
+        response.setPostId(post.getPostId());
+        response.setUserId(post.getUserId());
+        response.setTitle(post.getTitle());
+        response.setCreatedAt(post.getCreatedAt().toString());
+
+        List<PostContentDto> contentDtos = post.getContents().stream()
+                .map(c -> {
+                    PostContentDto dto = new PostContentDto();
+                    dto.setContentType(c.getContentType());
+                    dto.setContent(c.getContent());
+                    dto.setOrder(c.getOrder());
+                    return dto;
+                }).collect(Collectors.toList());
+
+        response.setContents(contentDtos);
+        return response;
     }
 
     @Override
     public PostResponse updatePost(Integer postId, PostRequest request, Integer userId) {
-        // TODO: 제목, 내용 전부 덮어쓰기
-        return null;
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        Post post = new Post(postId, userId, request.getTitle(), null, now, null);
+        postRepository.deleteContents(postId, userId);
+        postRepository.saveContents(request.getContents().stream()
+                .map(dto -> new PostContent(
+                        null,
+                        postId,
+                        userId,
+                        dto.getContentType(),
+                        dto.getContent(),
+                        dto.getOrder()
+                )).collect(Collectors.toList())
+        );
+
+        Post updated = postRepository.findById(postId);
+        return getPostById(updated.getPostId());
     }
 
     @Override
     public void deletePost(Integer postId, Integer userId) {
-        // TODO: post + contents 삭제
+        postRepository.deleteContents(postId, userId);
+        postRepository.delete(postId, userId);
     }
 }

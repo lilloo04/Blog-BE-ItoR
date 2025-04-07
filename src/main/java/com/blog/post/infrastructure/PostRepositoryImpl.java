@@ -4,6 +4,7 @@ import com.blog.post.domain.Post;
 import com.blog.post.domain.PostContent;
 import com.blog.post.domain.PostRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -55,8 +56,14 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post findById(Integer postId) {
-        // TODO: post와 contents 조인해서 조회
-        return null;
+        String sql = "SELECT * FROM posts WHERE post_id = ?";
+        Post post = jdbc.queryForObject(sql, postRowMapper(), postId);
+
+        String contentSql = "SELECT * FROM contents WHERE post_id = ? ORDER BY `order` ASC";
+        List<PostContent> contents = jdbc.query(contentSql, contentRowMapper(), postId);
+
+        post.setContents(contents);
+        return post;
     }
 
     @Override
@@ -69,5 +76,27 @@ public class PostRepositoryImpl implements PostRepository {
     public void deleteContents(Integer postId, Integer userId) {
         String sql = "DELETE FROM contents WHERE post_id = ? AND user_id = ?";
         jdbc.update(sql, postId, userId);
+    }
+
+    private RowMapper<Post> postRowMapper() {
+        return (rs, rowNum) -> new Post(
+                rs.getInt("post_id"),
+                rs.getInt("user_id"),
+                rs.getString("title"),
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at"),
+                null
+        );
+    }
+
+    private RowMapper<PostContent> contentRowMapper() {
+        return (rs, rowNum) -> new PostContent(
+                rs.getInt("content_id"),
+                rs.getInt("post_id"),
+                rs.getInt("user_id"),
+                rs.getString("content_type"),
+                rs.getString("content"),
+                rs.getInt("order")
+        );
     }
 }
