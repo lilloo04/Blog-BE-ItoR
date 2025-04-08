@@ -117,4 +117,29 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteContents(postId, userId);
         postRepository.delete(postId, userId);
     }
+
+    @Override
+    public List<PostResponse> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+
+        return posts.stream().map(post -> {
+            PostResponse response = new PostResponse();
+            response.setPostId(post.getPostId());
+            response.setUserId(post.getUserId());
+            response.setTitle(post.getTitle());
+            response.setCreatedAt(post.getCreatedAt().toString());
+
+            List<PostContentDto> contentDtos = post.getContents().stream().map(c -> {
+                PostContentDto dto = new PostContentDto();
+                dto.setContentType(c.getContentType());
+                dto.setContent(c.getContent());
+                dto.setOrder(c.getOrder());
+                return dto;
+            }).collect(Collectors.toList());
+
+            response.setContents(contentDtos);
+            return response;
+        }).collect(Collectors.toList());
+    }
+
 }

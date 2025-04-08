@@ -99,4 +99,20 @@ public class PostRepositoryImpl implements PostRepository {
                 rs.getInt("order")
         );
     }
+
+    @Override
+    public List<Post> findAll() {
+        String sql = "SELECT * FROM posts ORDER BY created_at DESC";
+
+        List<Post> posts = jdbc.query(sql, postRowMapper());
+
+        for (Post post : posts) {
+            String contentSql = "SELECT * FROM contents WHERE post_id = ? ORDER BY `order` ASC";
+            List<PostContent> contents = jdbc.query(contentSql, contentRowMapper(), post.getPostId());
+            post.setContents(contents);
+        }
+
+        return posts;
+    }
+
 }

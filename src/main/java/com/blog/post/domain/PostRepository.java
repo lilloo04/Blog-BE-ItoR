@@ -10,6 +10,9 @@ public interface PostRepository {
     // 게시물 내용 저장
     void saveContents(List<PostContent> contents);
 
+    //게시물 전체 조회
+    List<Post> findAll();
+
     // 게시물 단건 조회
     Post findById(Integer postId);
 

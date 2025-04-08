@@ -6,6 +6,8 @@ import com.blog.post.presentation.dto.PostResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/post")
 public class PostController {
@@ -28,6 +30,12 @@ public class PostController {
     }
 
     // 게시물 조회
+    @GetMapping
+    public ResponseEntity<List<PostResponse>> getAllPosts() {
+        List<PostResponse> posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> getPost(@PathVariable Integer postId) {
         PostResponse response = postService.getPostById(postId);
