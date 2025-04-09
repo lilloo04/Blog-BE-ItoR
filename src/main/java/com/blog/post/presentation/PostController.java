@@ -3,6 +3,7 @@ package com.blog.post.presentation;
 import com.blog.post.domain.PostService;
 import com.blog.post.presentation.dto.PostRequest;
 import com.blog.post.presentation.dto.PostResponse;
+import com.blog.token.infrastructure.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,65 +14,50 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, JwtTokenProvider jwtTokenProvider) {
         this.postService = postService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // 게시물 업로드
     @PostMapping
     public ResponseEntity<PostResponse> createPost(
             @RequestBody PostRequest request,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = extractUserIdFromToken(token);
+        Integer userId = jwtTokenProvider.extractUserId(token);
         PostResponse response = postService.createPost(request, userId);
         return ResponseEntity.ok(response);
     }
 
-    // 게시물 조회
     @GetMapping
     public ResponseEntity<List<PostResponse>> getAllPosts() {
-        List<PostResponse> posts = postService.getAllPosts();
-        return ResponseEntity.ok(posts);
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> getPost(@PathVariable Integer postId) {
-        PostResponse response = postService.getPostById(postId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(postService.getPostById(postId));
     }
 
-    // 게시물 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponse> updatePost(
             @PathVariable Integer postId,
             @RequestBody PostRequest request,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = extractUserIdFromToken(token);
-        PostResponse response = postService.updatePost(postId, request, userId);
-        return ResponseEntity.ok(response);
+        Integer userId = jwtTokenProvider.extractUserId(token);
+        return ResponseEntity.ok(postService.updatePost(postId, request, userId));
     }
 
-    // 게시물 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(
             @PathVariable Integer postId,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = extractUserIdFromToken(token);
+        Integer userId = jwtTokenProvider.extractUserId(token);
         postService.deletePost(postId, userId);
         return ResponseEntity.ok().build();
-    }
-
-    // 토큰에서 userId 파싱
-    private Integer extractUserIdFromToken(String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-
-        return Integer.parseInt(com.blog.token.infrastructure.JwtTokenProvider
-                .parseUserId(token));
     }
 }

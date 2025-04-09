@@ -136,4 +136,12 @@ public class JwtTokenProvider {
         throw new RuntimeException("sub 필드가 없음");
     }
 
+    public Integer extractUserId(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        return Integer.parseInt(parseUserId(token));
+    }
+
+
 }
