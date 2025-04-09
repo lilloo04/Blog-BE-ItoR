@@ -5,7 +5,7 @@ public class PostContent {
     private Integer contentId;
     private Integer postId;
     private Integer userId;
-    private String contentType; // "text" or "image"
+    private PostContentType contentType;
     private String content;
     private Integer order;
 
@@ -13,7 +13,7 @@ public class PostContent {
             Integer contentId,
             Integer postId,
             Integer userId,
-            String contentType,
+            PostContentType contentType,
             String content,
             Integer order
     ) {
@@ -28,7 +28,7 @@ public class PostContent {
     public Integer getContentId() { return contentId; }
     public Integer getPostId() { return postId; }
     public Integer getUserId() { return userId; }
-    public String getContentType() { return contentType; }
+    public PostContentType getContentType() { return contentType; }
     public String getContent() { return content; }
     public Integer getOrder() { return order; }
 

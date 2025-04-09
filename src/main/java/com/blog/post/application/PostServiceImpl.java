@@ -1,9 +1,6 @@
 package com.blog.post.application;
 
-import com.blog.post.domain.Post;
-import com.blog.post.domain.PostContent;
-import com.blog.post.domain.PostRepository;
-import com.blog.post.domain.PostService;
+import com.blog.post.domain.*;
 import com.blog.post.presentation.dto.PostContentDto;
 import com.blog.post.presentation.dto.PostRequest;
 import com.blog.post.presentation.dto.PostResponse;
@@ -41,7 +38,7 @@ public class PostServiceImpl implements PostService {
                         null,
                         post.getPostId(),
                         userId,
-                        dto.getContentType(),
+                        PostContentType.from(dto.getContentType()),
                         dto.getContent(),
                         dto.getOrder()
                 )).collect(Collectors.toList());
@@ -58,7 +55,7 @@ public class PostServiceImpl implements PostService {
         List<PostContentDto> contentDtos = contents.stream()
                 .map(c -> {
                     PostContentDto dto = new PostContentDto();
-                    dto.setContentType(c.getContentType());
+                    dto.setContentType(c.getContentType().getValue());
                     dto.setContent(c.getContent());
                     dto.setOrder(c.getOrder());
                     return dto;
@@ -81,7 +78,7 @@ public class PostServiceImpl implements PostService {
         List<PostContentDto> contentDtos = post.getContents().stream()
                 .map(c -> {
                     PostContentDto dto = new PostContentDto();
-                    dto.setContentType(c.getContentType());
+                    dto.setContentType(c.getContentType().getValue());
                     dto.setContent(c.getContent());
                     dto.setOrder(c.getOrder());
                     return dto;
@@ -102,7 +99,7 @@ public class PostServiceImpl implements PostService {
                         null,
                         postId,
                         userId,
-                        dto.getContentType(),
+                        PostContentType.from(dto.getContentType()),
                         dto.getContent(),
                         dto.getOrder()
                 )).collect(Collectors.toList())
@@ -131,7 +128,7 @@ public class PostServiceImpl implements PostService {
 
             List<PostContentDto> contentDtos = post.getContents().stream().map(c -> {
                 PostContentDto dto = new PostContentDto();
-                dto.setContentType(c.getContentType());
+                dto.setContentType(c.getContentType().getValue());
                 dto.setContent(c.getContent());
                 dto.setOrder(c.getOrder());
                 return dto;

@@ -2,6 +2,7 @@ package com.blog.post.infrastructure;
 
 import com.blog.post.domain.Post;
 import com.blog.post.domain.PostContent;
+import com.blog.post.domain.PostContentType;
 import com.blog.post.domain.PostRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -94,7 +95,7 @@ public class PostRepositoryImpl implements PostRepository {
                 rs.getInt("content_id"),
                 rs.getInt("post_id"),
                 rs.getInt("user_id"),
-                rs.getString("content_type"),
+                PostContentType.from(rs.getString("content_type")),
                 rs.getString("content"),
                 rs.getInt("order")
         );
