@@ -62,7 +62,6 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(postId, commentId, userId);
     }
 
-    // 🔥 공통 변환 메서드
     private CommentResponse toResponse(Comment comment) {
         CommentResponse response = new CommentResponse();
         response.setCommentId(comment.getCommentId());

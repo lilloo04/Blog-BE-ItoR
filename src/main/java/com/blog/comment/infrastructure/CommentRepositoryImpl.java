@@ -35,7 +35,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             return ps;
         }, keyHolder);
 
-        // ✅ DB가 생성한 comment_id를 받아서 자바 객체에도 세팅!
+
         comment.setCommentId(keyHolder.getKey().intValue());
     }
 
