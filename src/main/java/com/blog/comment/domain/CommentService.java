@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface CommentService {
 
-    CommentResponse createComment(Integer postId, CommentCreateRequest request, Integer userId);
+    CommentResponse createComment(int postId, CommentCreateRequest request, int userId);
 
-    List<CommentResponse> getComments(Integer postId);
+    List<CommentResponse> getComments(int postId);
 
-    CommentResponse updateComment(Integer postId, Integer commentId, CommentUpdateRequest request, Integer userId);
+    CommentResponse updateComment(int postId, int commentId, CommentUpdateRequest request, int userId);
 
-    void deleteComment(Integer postId, Integer commentId, Integer userId);
+    void deleteComment(int postId, int commentId, int userId);
 }

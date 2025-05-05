@@ -25,18 +25,18 @@ public class CommentController {
     // 댓글 등록
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(
-            @PathVariable Integer postId,
+            @PathVariable int postId,
             @RequestBody CommentCreateRequest request,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = jwtTokenProvider.extractUserId(token);
+        int userId = jwtTokenProvider.extractUserId(token);
         CommentResponse response = commentService.createComment(postId, request, userId);
         return ResponseEntity.ok(response);
     }
 
     // 댓글 조회
     @GetMapping
-    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Integer postId) {
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable int postId) {
         List<CommentResponse> responses = commentService.getComments(postId);
         return ResponseEntity.ok(responses);
     }
@@ -44,12 +44,12 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponse> updateComment(
-            @PathVariable Integer postId,
-            @PathVariable Integer commentId,
+            @PathVariable int postId,
+            @PathVariable int commentId,
             @RequestBody CommentUpdateRequest request,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = jwtTokenProvider.extractUserId(token);
+        int userId = jwtTokenProvider.extractUserId(token);
         CommentResponse response = commentService.updateComment(postId, commentId, request, userId);
         return ResponseEntity.ok(response);
     }
@@ -57,11 +57,11 @@ public class CommentController {
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
-            @PathVariable Integer postId,
-            @PathVariable Integer commentId,
+            @PathVariable int postId,
+            @PathVariable int commentId,
             @RequestHeader("Authorization") String token
     ) {
-        Integer userId = jwtTokenProvider.extractUserId(token);
+        int userId = jwtTokenProvider.extractUserId(token);
         commentService.deleteComment(postId, commentId, userId);
         return ResponseEntity.ok().build();
     }

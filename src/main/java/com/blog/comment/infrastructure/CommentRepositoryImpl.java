@@ -40,25 +40,25 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findByPostId(Integer postId) {
+    public List<Comment> findByPostId(int postId) {
         String sql = "SELECT * FROM comments WHERE post_id = ?";
         return jdbcTemplate.query(sql, commentRowMapper(), postId);
     }
 
     @Override
-    public Comment findById(Integer postId, Integer commentId) {
+    public Comment findById(int postId, int commentId) {
         String sql = "SELECT * FROM comments WHERE post_id = ? AND comment_id = ?";
         return jdbcTemplate.queryForObject(sql, commentRowMapper(), postId, commentId);
     }
 
     @Override
-    public void update(Integer commentId, Integer postId, Integer userId, String content, Timestamp updatedAt) {
+    public void update(int commentId, int postId, int userId, String content, Timestamp updatedAt) {
         String sql = "UPDATE comments SET content = ?, updated_at = ? WHERE comment_id = ? AND post_id = ? AND user_id = ?";
         jdbcTemplate.update(sql, content, updatedAt, commentId, postId, userId);
     }
 
     @Override
-    public void delete(Integer postId, Integer commentId, Integer userId) {
+    public void delete(int postId, int commentId, int userId) {
         String sql = "DELETE FROM comments WHERE post_id = ? AND comment_id = ? AND user_id = ?";
         jdbcTemplate.update(sql, postId, commentId, userId);
     }

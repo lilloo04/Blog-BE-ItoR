@@ -4,17 +4,17 @@ import java.sql.Timestamp;
 
 public class Comment {
 
-    private Integer commentId;
-    private Integer postId;
-    private Integer userId;
+    private int commentId;
+    private int postId;
+    private int userId;
     private String content;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
     public Comment(
-            Integer commentId,
-            Integer postId,
-            Integer userId,
+            int commentId,
+            int postId,
+            int userId,
             String content,
             Timestamp createdAt,
             Timestamp updatedAt
@@ -27,15 +27,15 @@ public class Comment {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getCommentId() {
+    public int getCommentId() {
         return commentId;
     }
 
-    public Integer getPostId() {
+    public int getPostId() {
         return postId;
     }
 
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -59,5 +59,5 @@ public class Comment {
         this.updatedAt = updatedAt;
     }
 
-    public void setCommentId(Integer commentId) { this.commentId = commentId; }
+    public void setCommentId(int commentId) { this.commentId = commentId; }
 }

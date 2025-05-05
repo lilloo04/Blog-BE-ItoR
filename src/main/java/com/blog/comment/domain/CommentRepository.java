@@ -7,11 +7,11 @@ public interface CommentRepository {
 
     void save(Comment comment);
 
-    List<Comment> findByPostId(Integer postId);
+    List<Comment> findByPostId(int postId);
 
-    Comment findById(Integer postId, Integer commentId);
+    Comment findById(int postId, int commentId);
 
-    void update(Integer commentId, Integer postId, Integer userId, String content, Timestamp updatedAt);
+    void update(int commentId, int postId, int userId, String content, Timestamp updatedAt);
 
-    void delete(Integer postId, Integer commentId, Integer userId);
+    void delete(int postId, int commentId, int userId);
 }

@@ -22,11 +22,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse createComment(Integer postId, CommentCreateRequest request, Integer userId) {
+    public CommentResponse createComment(int postId, CommentCreateRequest request, int userId) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
         Comment comment = new Comment(
-                null,
+                0,
                 postId,
                 userId,
                 request.getContent(),
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponse> getComments(Integer postId) {
+    public List<CommentResponse> getComments(int postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream()
                 .map(this::toResponse)
@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse updateComment(Integer postId, Integer commentId, CommentUpdateRequest request, Integer userId) {
+    public CommentResponse updateComment(int postId, int commentId, CommentUpdateRequest request, int userId) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
         commentRepository.update(commentId, postId, userId, request.getContent(), now);
@@ -58,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Integer postId, Integer commentId, Integer userId) {
+    public void deleteComment(int postId, int commentId, int userId) {
         commentRepository.delete(postId, commentId, userId);
     }
 

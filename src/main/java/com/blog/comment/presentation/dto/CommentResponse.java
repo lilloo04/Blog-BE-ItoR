@@ -2,34 +2,34 @@ package com.blog.comment.presentation.dto;
 
 public class CommentResponse {
 
-    private Integer commentId;
-    private Integer postId;
-    private Integer userId;
+    private int commentId;
+    private int postId;
+    private int userId;
     private String content;
     private String createdAt;
     private String updatedAt;
 
-    public Integer getCommentId() {
+    public int getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Integer commentId) {
+    public void setCommentId(int commentId) {
         this.commentId = commentId;
     }
 
-    public Integer getPostId() {
+    public int getPostId() {
         return postId;
     }
 
-    public void setPostId(Integer postId) {
+    public void setPostId(int postId) {
         this.postId = postId;
     }
 
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
