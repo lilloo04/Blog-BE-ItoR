@@ -5,6 +5,7 @@ import com.blog.comment.presentation.dto.CommentCreateRequest;
 import com.blog.comment.presentation.dto.CommentResponse;
 import com.blog.comment.presentation.dto.CommentUpdateRequest;
 import com.blog.token.infrastructure.JwtTokenProvider;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,11 @@ public class CommentController {
     public ResponseEntity<CommentResponse> createComment(
             @PathVariable int postId,
             @RequestBody CommentCreateRequest request,
-            @RequestHeader("Authorization") String token
+            @RequestHeader(value = "Authorization", required = false) String token
     ) {
-        int userId = jwtTokenProvider.extractUserId(token);
+        Integer userId = extractUserIdFromToken(token);
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         CommentResponse response = commentService.createComment(postId, request, userId);
         return ResponseEntity.ok(response);
     }
@@ -47,9 +50,11 @@ public class CommentController {
             @PathVariable int postId,
             @PathVariable int commentId,
             @RequestBody CommentUpdateRequest request,
-            @RequestHeader("Authorization") String token
+            @RequestHeader(value = "Authorization", required = false) String token
     ) {
-        int userId = jwtTokenProvider.extractUserId(token);
+        Integer userId = extractUserIdFromToken(token);
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         CommentResponse response = commentService.updateComment(postId, commentId, request, userId);
         return ResponseEntity.ok(response);
     }
@@ -59,10 +64,18 @@ public class CommentController {
     public ResponseEntity<Void> deleteComment(
             @PathVariable int postId,
             @PathVariable int commentId,
-            @RequestHeader("Authorization") String token
+            @RequestHeader(value = "Authorization", required = false) String token
     ) {
-        int userId = jwtTokenProvider.extractUserId(token);
+        Integer userId = extractUserIdFromToken(token);
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         commentService.deleteComment(postId, commentId, userId);
         return ResponseEntity.ok().build();
+    }
+
+    private Integer extractUserIdFromToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) return null;
+        String rawToken = token.substring(7);
+        return jwtTokenProvider.extractUserId(rawToken);
     }
 }
