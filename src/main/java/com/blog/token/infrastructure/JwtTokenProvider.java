@@ -140,7 +140,7 @@ public class JwtTokenProvider {
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        return int.parseInt(parseUserId(token));
+        return Integer.parseInt(parseUserId(token));
     }
 
 

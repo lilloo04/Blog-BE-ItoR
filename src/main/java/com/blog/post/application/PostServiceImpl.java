@@ -7,6 +7,7 @@ import com.blog.post.presentation.dto.PostResponse;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,16 +66,14 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    // 🔽 아래는 private helper 메서드 🔽
-
     private Post buildPostFromRequest(PostRequest request, int userId, Timestamp now) {
-        return new Post(null, userId, request.getTitle(), now, now, null);
+        return new Post(0, userId, request.getTitle(), now, now, new ArrayList<>());
     }
 
     private List<PostContent> convertToPostContents(PostRequest request, int postId, int userId) {
         return request.getContents().stream()
                 .map(dto -> new PostContent(
-                        null,
+                        0,
                         postId,
                         userId,
                         PostContentType.from(dto.getContentType()),
