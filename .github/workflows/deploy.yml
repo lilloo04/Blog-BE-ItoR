@@ -56,17 +56,17 @@ jobs:
             unzip deploy-package.zip -d app-unzipped
             cd app-unzipped
 
-            # application.properties 만들기
+            # application.properties 생성
             cat <<EOF > src/main/resources/application.properties
-  spring.datasource.url=${DB_URL}
-  spring.datasource.username=${DB_USERNAME}
-  spring.datasource.password=${DB_PASSWORD}
-  spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+            spring.datasource.url=${DB_URL}
+            spring.datasource.username=${DB_USERNAME}
+            spring.datasource.password=${DB_PASSWORD}
+            spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
   
-  jwt.secret=${JWT_SECRET}
-  EOF
+            jwt.secret=${JWT_SECRET}
+            EOF
   
-  docker stop blog-be-itor || true
-  docker rm blog-be-itor || true
-  docker build -t blog-be-itor .
-  docker run -d -p 8080:8080 --name blog-be-itor blog-be-itor
+            docker stop blog-be-itor || true
+            docker rm blog-be-itor || true
+            docker build -t blog-be-itor .
+            docker run -d -p 8080:8080 --name blog-be-itor blog-be-itor
