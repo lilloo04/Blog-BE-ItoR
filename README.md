@@ -1,17 +1,70 @@
-# Blog-BE-ItoR
+# [Leets 5th] Blog 만들기
 
-# Blog 만들기
+## ERD
+<img width="893" alt="image" src="https://github.com/user-attachments/assets/c8ffcae8-7573-4a72-8b24-73d6197dc15a" />
 
-## 미션 요구사항
+## 디렉토리 구조
 
-1. 미션 진행 방법을 꼭 읽고 진행해주세요
-   [미션 진행 방법](https://www.notion.so/46dbd9440a4f4d5e97228011dff70f5a?pvs=21)
-2. 해당 ReadMe 를 지우고 erd 및 디렉토리 구조를 작성해주세요
-    1. erd를 그리는 방법은 자유입니다
-    2. 디렉토리 구조도 자유롭게 설정하셔도 좋습니다
-3. 아래 API 요구사항은 API URI를 포함하고 있습니다. 반드시 URI를 지켜서 구현해주세요
+```
+├── user/
+│    ├── domain/
+│    │    ├── User.java
+│    │    ├── UserRepository.java
+│    │    └── UserService.java
+│    ├── application/
+│    │    ├── UserServiceImpl.java
+│    │    ├── LoginService.java
+│    │    └── LoginServiceImpl.java
+│    ├── infrastructure/
+│    │    ├── UserRepositoryImpl.java
+│    │    └── KakaoLoginServiceImpl.java
+│    ├── presentation/
+│    │    ├── UserController.java
+│    │    ├── UserDto.java
+│    │    └── LoginController.java
+├── post/
+│    ├── domain/
+│    │    ├── Post.java
+│    │    ├── PostRepository.java
+│    │    └── PostService.java
+│    ├── application/
+│    │    ├── PostServiceImpl.java
+│    └── infrastructure/
+│         ├── PostRepositoryImpl.java
+│    └── presentation/
+│         ├── PostController.java
+│         └── PostDto.java
+├── comment/
+│    ├── domain/
+│    │    ├── Comment.java
+│    │    ├── CommentRepository.java
+│    │    └── CommentService.java
+│    ├── application/
+│    │    ├── CommentServiceImpl.java
+│    └── infrastructure/
+│         ├── CommentRepositoryImpl.java
+│    └── presentation/
+│         ├── CommentController.java
+│         └── CommentDto.java
+├── image/
+│    ├── domain/
+│    │    ├── Image.java
+│    │    ├── ImageRepository.java
+│    │    └── ImageService.java
+│    ├── application/
+│    │    ├── ImageServiceImpl.java
+│    └── infrastructure/
+│         ├── ImageRepositoryImpl.java
+│    └── presentation/
+│         ├── ImageController.java
+│         └── ImageDto.java
+├── resources/
+│    ├── application.properties
+│    └── db/
+│         └── schema.sql
+└── test/
 
-`ex) GET posts/all`
+```
 
 
 ## API 요구사항
